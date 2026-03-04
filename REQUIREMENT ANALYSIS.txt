@@ -1,0 +1,247 @@
+eDUShare Malawi
+National Academic Materials Sharing Platform
+Software Requirements Specification  •  Version 2.0
+Status	Draft — Ready for Development Review
+Target Launch	Phase 1: Q3 2025
+Stack	Laravel (PHP) + MySQL + Tailwind CSS + Paychangu
+Audience	Developers, Stakeholders, Investors, System Admins
+Contact	team@acadshare.mw
+
+
+1. Introduction
+1.1 Purpose
+This Software Requirements Specification (SRS) defines the complete functional and non-functional requirements for AcadShare Malawi — a centralized, secure, and scalable platform for sharing academic materials across all major universities in Malawi.
+The platform is designed around a freemium model, identity-based access control, and AI-powered study tools, positioning it as the go-to academic infrastructure for Malawian students.
+
+1.2 Vision Statement
+"To become Malawi's #1 academic resource hub — connecting every student with quality learning materials, intelligent study tools, and a community of knowledge-sharing peers."
+
+1.3 Scope
+•	Support all major Malawian universities on a single platform
+•	Enable students to upload, browse, and access academic materials
+•	Enforce a freemium tier model with clear upgrade incentives
+•	Verify identities (KYC) to prevent abuse and ensure academic integrity
+•	Deliver AI-powered study tools as a premium value driver
+•	Process payments via Airtel Money and Mpamba through Paychangu
+
+1.4 Definitions & Acronyms
+KYC	Know Your Customer — identity verification process
+Freemium	Free access tier with feature limitations
+Premium	Paid subscription with full platform access
+AI Module	AI service providing summaries, explanations, Q&A
+Paychangu	Malawi payment gateway supporting Airtel Money & Mpamba
+OTP	One-Time Password for phone/email verification
+RBAC	Role-Based Access Control
+
+2. User Classes & Roles
+The platform defines two primary user tiers and one administrative role. All users must complete KYC before accessing platform content.
+
+2.1 Free User
+A registered student who has completed KYC verification and selected their primary institution.
+•	30 minutes of daily reading/viewing access
+•	Access to their primary institution's materials only
+•	Preview-only (first 10%) access to other institutions' materials
+•	1 AI query per day
+•	Can upload materials (subject to admin approval)
+•	In-app viewing only — no downloads
+
+2.2 Premium User
+An upgraded user with an active paid subscription.
+•	Unlimited daily reading/viewing access
+•	Cross-university access to all institutions
+•	Unlimited file downloads
+•	Unlimited AI queries (summaries, Q&A, concept explanations)
+•	Unlimited file uploads with priority approval
+•	Access to premium-only curated collections
+•	Early access to new features
+•	Priority customer support
+
+2.3 Administrator
+Platform staff with elevated privileges for system governance.
+•	Manage and onboard universities/institutions
+•	Review and approve/reject uploaded materials
+•	Verify KYC submissions
+•	Manage user subscriptions and access levels
+•	Monitor usage analytics and flag abusive behavior
+•	Configure subscription plans and pricing
+
+3. Free vs. Premium Features
+The table below defines the complete feature set and access levels for each tier.
+
+Feature	Free	Premium
+ACCESS & VIEWING
+Daily viewing time limit	30 mins/day	Unlimited
+Access to primary institution	✓	✓
+Cross-university access	✗	✓
+Preview other institutions (10%)	✓	✓
+In-app viewing	✓	✓
+File downloads	✗	✓
+Access premium collections	✗	✓
+UPLOADING
+Upload academic materials	Up to 5 files/month	Unlimited
+Upload approval priority	Standard queue	Priority queue
+File version tracking	✓	✓
+Upload analytics (views, downloads)	Basic	Full analytics
+AI-POWERED TOOLS
+AI document summary	1/day	Unlimited
+AI concept explanation	✗	✓
+AI Q&A on uploaded materials	✗	✓
+AI study quiz generation	✗	✓
+AI essay/assignment feedback	✗	✓
+COMMUNITY & SUPPORT
+Rate and review materials	✓	✓
+Commenting on materials	Read only	✓
+Bookmark materials	Up to 20	Unlimited
+Customer support	Community forums	Priority support
+Early access to new features	✗	✓
+
+4. Detailed Functional Requirements
+4.1 User Registration & KYC
+•	Users register with email, phone number, and password
+•	Phone number verified via OTP
+•	Users upload a Student ID or National ID for KYC verification
+•	KYC approval by admin unlocks full free-tier access
+•	System enforces one account per verified identity
+•	Password reset via secure time-limited email token
+•	Passwords stored using bcrypt hashing
+
+4.2 Institution Selection
+•	On registration, users select one primary university
+•	Supported institutions list maintained by admin
+•	Free users see full content only from their primary institution
+•	Other institutions show a 10% preview with upgrade prompt
+•	Premium users access all institutions without restriction
+
+4.3 File Management
+Accepted Formats
+•	PDF, DOC/DOCX, PPT/PPTX
+•	Maximum file size: 50MB (configurable by admin)
+Metadata
+•	Uploader ID, institution, faculty, course, module, year, timestamp
+Workflow
+•	All uploads enter an admin approval queue before going live
+•	Version tracking supported — users can update files
+•	Files scanned for malware on upload
+•	Free users: up to 5 uploads per month
+•	Premium users: unlimited uploads with priority queue placement
+
+4.4 AI Module
+AI features are delivered via an independent AI microservice and integrated into the platform UI.
+Premium AI Features
+•	Document Summary — generate concise summaries of any uploaded file
+•	Concept Explanation — ask the AI to explain any topic or term from the material
+•	Q&A Mode — ask questions based on any uploaded document
+•	Study Quiz Generator — auto-generate practice quizzes from materials
+•	Essay/Assignment Feedback — get AI feedback on written work
+Free AI Features
+•	1 AI document summary per day
+Usage Controls
+•	All AI queries logged per user per session
+•	Usage dashboards visible to both user and admin
+
+4.5 Payment & Subscription System
+Payment Channels
+•	Airtel Money — via Paychangu gateway integration
+•	Mpamba (TNM) — via Paychangu gateway integration
+•	Wallet/points top-up for flexible access purchasing
+Subscription Plans
+Plan	Duration	Suggested Price (MWK)	Access
+Monthly	30 days	MWK 2,500	Full premium
+Semester	~4 months	MWK 8,000	Full premium
+Annual	12 months	MWK 20,000	Full premium + perks
+
+Paychangu Integration Details
+•	Use Paychangu REST API to initiate and verify mobile money payments
+•	System generates a unique transaction reference per payment
+•	Paychangu sends a webhook callback on payment success/failure
+•	Backend listens for webhook, verifies signature, then upgrades user access
+•	Subscription status stored in database with expiry timestamp
+•	Access automatically downgraded to free tier on subscription expiry
+•	Users notified via SMS/email 7 days and 1 day before expiry
+
+5. Non-Functional Requirements
+5.1 Performance
+•	Support minimum 500 concurrent users at launch
+•	Page load time ≤ 3 seconds under normal load
+•	API response time ≤ 500ms for all standard endpoints
+•	Platform availability target: 99.5% uptime (SLA)
+
+5.2 Security
+•	All communication over HTTPS (TLS 1.2+)
+•	Passwords hashed with bcrypt (cost factor ≥ 12)
+•	Files encrypted at rest in storage
+•	Role-based access control (RBAC) enforced on all endpoints
+•	KYC identity verification required before full platform access
+•	One verified identity = one account enforcement
+•	Rate limiting on all auth and AI endpoints
+•	Malware scanning on all uploaded files
+•	Paychangu webhook signature verification
+
+5.3 Usability
+•	Fully responsive on mobile and desktop browsers
+•	Clear visual distinction between free and premium features
+•	Upgrade prompts displayed contextually when users hit limits
+•	Onboarding flow for new users (< 3 minutes to first content view)
+
+5.4 Scalability
+•	Database schema supports adding unlimited new institutions
+•	File storage architected for easy horizontal scaling
+•	AI module deployed as an independent, containerized microservice
+•	Architecture supports future native mobile app (iOS/Android)
+
+5.5 Maintainability
+•	Laravel MVC architecture with clean separation of concerns
+•	Full API documentation (Swagger/OpenAPI)
+•	Version control via Git with feature-branch workflow
+•	Automated test coverage for critical paths (auth, payments, access control)
+
+6. System Architecture
+6.1 Tech Stack
+Layer	Technology
+Frontend	HTML5, Tailwind CSS, JavaScript (Alpine.js / Vue.js)
+Backend	PHP 8.x — Laravel Framework
+Database	MySQL 8.x
+File Storage	Local or S3-compatible object storage
+AI Service	External LLM API (OpenAI / Claude) via microservice
+Payments	Paychangu — Airtel Money & Mpamba
+Hosting	Secure server (on-premise or managed VPS)
+Caching	Redis for session, rate limiting & queue management
+
+6.2 Database Schema (Core Tables)
+The following tables form the core data model:
+•	users — id, name, email, phone, password, kyc_status, role, university_id
+•	institutions — id, name, country, logo, active
+•	faculties — id, institution_id, name
+•	courses — id, faculty_id, name, code, year
+•	files — id, uploader_id, institution_id, faculty_id, course_id, title, path, format, size, status, version
+•	subscriptions — id, user_id, plan, starts_at, expires_at, status, payment_ref
+•	wallet_transactions — id, user_id, amount, type, reference, status, created_at
+•	ai_usage_logs — id, user_id, file_id, query_type, tokens_used, created_at
+•	kyc_submissions — id, user_id, document_type, document_path, status, reviewed_by
+
+7. Development Roadmap
+The project follows Agile methodology with iterative, deployable phases.
+
+Phase	Name	Deliverables
+Phase 1	Core Platform	Auth, KYC, institution selection, file upload/viewing, admin panel
+Phase 2	Freemium Controls	Access limits, tier restrictions, upgrade prompts, usage tracking
+Phase 3	Payment Integration	Paychangu integration, Airtel Money & Mpamba, subscription management, webhooks
+Phase 4	AI Integration	AI summary, Q&A, quiz generation, assignment feedback, usage logging
+Phase 5	Community Features	Comments, ratings, bookmarks, trending dashboard, notifications
+Phase 6	Scale & Mobile	Performance optimization, national expansion, mobile app (React Native)
+
+8. Future Enhancements
+•	Native mobile app (iOS & Android via React Native)
+•	Offline access with time-limited expiry for downloaded files
+•	Institutional partnership verification badges
+•	Material rating system with leaderboards
+•	Trending materials dashboard
+•	Discussion forums per course/module
+•	Peer tutoring marketplace
+•	Group study rooms with shared AI sessions
+•	Integration with university academic calendars
+•	API for institutional LMS integration (Moodle etc.)
+
+9. Conclusion
+AcadShare Malawi is built to be the definitive academic platform for Malawian students — scalable from a single university pilot to a national infrastructure, with a clear monetization path and AI-powered differentiation that competitors cannot easily replicate.
+This SRS defines a complete, developer-ready blueprint that combines structured academic file sharing, identity-based access control, a freemium monetization model with Airtel Money and Mpamba payments, and AI-powered study tools — all built on a robust, maintainable Laravel architecture ready to scale nationally.
