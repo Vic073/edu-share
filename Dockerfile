@@ -20,9 +20,13 @@ RUN mkdir -p bootstrap/cache storage/framework/sessions \
     && chown -R www-data:www-data /var/www/html \
     && chmod -R 775 bootstrap/cache storage
 
-# Build frontend assets
 RUN npm ci && npm run build
 
 RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 80
+
+COPY docker-start.sh /usr/local/bin/docker-start.sh
+RUN chmod +x /usr/local/bin/docker-start.sh
+
+CMD ["/usr/local/bin/docker-start.sh"]
