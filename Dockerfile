@@ -11,7 +11,6 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 USER root
 
-# Install Node.js
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
 
@@ -25,8 +24,4 @@ RUN npm ci && npm run build
 RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 80
-
-COPY docker-start.sh /usr/local/bin/docker-start.sh
-RUN chmod +x /usr/local/bin/docker-start.sh
-
-CMD ["/usr/local/bin/docker-start.sh"]
+# No CMD — let the image use its default
