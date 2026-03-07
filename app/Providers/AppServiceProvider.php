@@ -32,5 +32,9 @@ class AppServiceProvider extends ServiceProvider
             $favoritesCount = $user ? $user->favorites()->count() : 0;
             $view->with('favoritesCount', $favoritesCount);
         });
+
+         if (config('app.env') === 'production') {
+        \URL::forceScheme('https');
+    }
     }
 }

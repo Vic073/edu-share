@@ -8,6 +8,8 @@ ENV APP_ENV=production
 ENV APP_DEBUG=false
 ENV LOG_CHANNEL=stderr
 ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV APP_URL=https://edu-share-1-9ill.onrender.com
+ENV ASSET_URL=https://edu-share-1-9ill.onrender.com
 
 USER root
 

@@ -112,20 +112,7 @@
         </a>
     </p>
     
-    <!-- Demo Accounts -->
-    <div class="mt-8 p-4 bg-dark-50 dark:bg-dark-800 rounded-lg">
-        <p class="text-xs text-dark-500 dark:text-dark-400 text-center mb-2">Demo Accounts</p>
-        <div class="grid grid-cols-2 gap-2 text-xs">
-            <div class="p-2 bg-white dark:bg-dark-700 rounded">
-                <p class="font-medium text-dark-700 dark:text-dark-300">User</p>
-                <p class="text-dark-500">user@edushare.mw / password</p>
-            </div>
-            <div class="p-2 bg-white dark:bg-dark-700 rounded">
-                <p class="font-medium text-dark-700 dark:text-dark-300">Admin</p>
-                <p class="text-dark-500">admin@edushare.mw / password</p>
-            </div>
-        </div>
-    </div>
+    
 </div>
 
 @endsection
