@@ -9,7 +9,6 @@ ENV APP_DEBUG=false
 ENV LOG_CHANNEL=stderr
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# Switch to root to fix permissions
 USER root
 
 RUN mkdir -p bootstrap/cache storage/framework/sessions \
@@ -20,5 +19,3 @@ RUN mkdir -p bootstrap/cache storage/framework/sessions \
 RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 80
-
-CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
